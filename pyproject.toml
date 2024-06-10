@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "estacionalidad"
-version = "0.1.0"
+version = "0.1.1"
 description = "Linecharts to plot the seasonal behaviour of data series throughout a year comparing the same month in different years."
 authors = ["Luca Gelmini <lucagelmini@github.com>"]
 license = "Apache-2.0"
