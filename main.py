@@ -1,5 +1,5 @@
-from src.Wrangling import DataFrameAdapter, read_series_indices_indec
-from src.Plot import SeassonalityChart
+from src.estacionalidad.Wrangling import DataFrameAdapter, read_series_indices_indec
+from src.estacionalidad.Plot import SeassonalityChart
 from matplotlib import pyplot as plt
 
 df = read_series_indices_indec()

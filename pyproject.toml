@@ -1,11 +1,13 @@
 [tool.poetry]
-name = "matplotlib-seassonalitly-chart"
+name = "estacionalidad"
 version = "0.1.0"
-description = "Linecharts to plot the seassonal behaviour of data series throrough a year comparing the same month in different years."
+description = "Linecharts to plot the seasonal behaviour of data series throughout a year comparing the same month in different years."
 authors = ["Luca Gelmini <lucagelmini@github.com>"]
-license = "Apache2.0"
+license = "Apache-2.0"
 readme = "README.md"
 homepage = "https://lucagelmini.space"
+repository = "https://github.com/LucaGelmini/estacionalidad"
+keywords = ["seasonality", "chart", "matplotlib", "statistics"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -13,7 +15,6 @@ matplotlib = "^3.8.4"
 pandas = "^2.2.2"
 openpyxl = "^3.1.2"
 xlrd = "^2.0.1"
-
 
 [build-system]
 requires = ["poetry-core"]
