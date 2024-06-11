@@ -1,10 +1,24 @@
-from ..Wrangling import DataFrameAdapter
+import pandas as pd
+from typing import Iterable, Literal
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
-from ..Plot.config import *
+import matplotlib.lines as mlines
 from dataclasses import dataclass
-from typing import Iterable
-import pandas as pd
+from ..Plot.config import *
+from ..Wrangling import DataFrameAdapter
+from .table import Table
+from .abstract_clases import AbstractSeasonalityChart
+
+
+@dataclass
+class LegendOptions:
+    show = True
+    loc: Literal[
+        'best', 'upper right', 'upper left',
+        'lower left', 'lower right', 'right',
+        'center left', 'center right', 'lower center',
+        'upper center', 'center'
+    ] = 'best'
 
 
 @dataclass
@@ -14,6 +28,7 @@ class AxesConfig:
     xtickslables = []
     ylabel = "Índice 2004 = 100"
     linewidth = 2
+    legend = LegendOptions()
 
     def apply(self, ax: Axes):
         ax.margins(x=self.xmargin)
@@ -26,7 +41,7 @@ class AxesConfig:
             self.apply(ax)
 
 
-class SeassonalityChart:
+class SeasonalityChart(AbstractSeasonalityChart):
     begin = None
     end = None
     axconfig = AxesConfig()
@@ -39,6 +54,8 @@ class SeassonalityChart:
 
         self.fig, self.ax = plt.subplots()
         self.axconfig.apply(self.ax)
+        self.proxy_lines = []
+        self.table = Table(self)
 
         for idx, a_series in enumerate(self.data.series):
             a_series["trace_color"] = "red"
@@ -78,7 +95,7 @@ class SeassonalityChart:
     def __render_line(self, a_series: dict, ax: Axes):
         for df in self.__set_plot_data(a_series['col_name']):
             ax.plot(df.index, df.value,
-                    color=a_series['trace_color'], linewidth=self.axconfig.linewidth)
+                    color=a_series['trace_color'], linewidth=self.axconfig.linewidth, label=a_series["full_name"])
             mean_value = df.groupby('p')['value'].transform('mean')
             ax.plot(df.index, mean_value,
                     color=a_series['mean_color'], linewidth=self.axconfig.linewidth)
@@ -86,6 +103,12 @@ class SeassonalityChart:
                        linestyle='--', linewidth=self.axconfig.linewidth)
             ax.tick_params(axis='y', which='major',
                            labelsize=15)
+        self.proxy_lines.append(mlines.Line2D(
+            [], [], color=a_series["trace_color"], label=a_series["full_name"]))
+
+        legend_options = self.axconfig.legend
+        if legend_options.show:
+            ax.legend(handles=self.proxy_lines, loc=legend_options.loc)
 
     def render(self):
         for a_series in self.data.series:

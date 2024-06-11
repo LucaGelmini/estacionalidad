@@ -1,65 +1,49 @@
 from src.estacionalidad.Wrangling import DataFrameAdapter, read_series_indices_indec
-from src.estacionalidad.Plot import SeassonalityChart
+from src.estacionalidad.Plot import SeasonalityChart, AxesConfig
 from matplotlib import pyplot as plt
 
 df = read_series_indices_indec()
 
+axes_config = AxesConfig()
+
 
 x = (
-    SeassonalityChart(
+    SeasonalityChart(
         DataFrameAdapter(df, 'quarterly', 'Y', 'M')
         .Map("p_x", "Índice de precios de las exportaciones")
         .Map("q_x", "Índice de cantidades de las exportaciones"))
     .set_year("2014", "2024")
     .map_color("p_x", "#FFE294", "#8B0000")
     .map_color("q_x", "#ECB210", "#8B0000")
-    .render())
+    .set_axconfig(axes_config))
 
 
 m = (
-    SeassonalityChart(
+    SeasonalityChart(
         DataFrameAdapter(df, 'quarterly', 'Y', 'M')
         .Map("p_m", "Índice de precios de las importaciones")
         .Map("q_m", "Índice de cantidades de las importaciones"))
     .set_year("2014", "2024")
     .map_color("p_m", "#CBADE0", "#8B0000")
     .map_color("q_m", "#A285A5", "#8B0000")
-    .render())
+    .set_axconfig(axes_config))
 
 
-c = (
-    SeassonalityChart(
+iti = (
+    SeasonalityChart(
         DataFrameAdapter(df, 'quarterly', 'Y', 'M')
         .Map("ITI", "Índice de términos del intercambio")
     )
     .set_year("2014", "2024")
     .map_color("ITI", "#CBADE0", "#8B0000")
-    .render())
+    .set_axconfig(axes_config))
+
+axes_config.linewidth = 2
+axes_config.legend.loc = "lower center"
+
+for plot in (x, m, iti):
+    plot.render()
+
+print(x.table.table_df)
 
 plt.show()
-
-
-# import pandas as pd
-
-# df = pd.read_excel("trimestral2024.xlsx")
-# df.columns = ["date", *df.columns[1:]]
-# df["date"] = pd.to_datetime(df.date)
-# df["year"] = df.date.dt.year
-# df['quarter'] = df['date'].dt.quarter
-# df[['year', 'quarter']] = df[['year', 'quarter']].astype(str)
-# # df = df.set_index(['year', 'quarter'])
-
-
-# adapted = (
-#     DataFrameAdapter(df, 'quarterly', 'year', 'quarter')
-#     .Map("X_P", "Índice de precios de las exportaciones")
-#     .Map("Q_P", "Índice de cantidades de las importaciones")
-# )
-
-# c = (
-#     SeassonalityChart(adapted)
-#     .set_year("2014", "2024")
-#     .map_color("X_P", "#FFE294", "#8B0000")
-#     .map_color("Q_P", "#ECB210", "#8B0000")
-#     .render())
-# c.show()
