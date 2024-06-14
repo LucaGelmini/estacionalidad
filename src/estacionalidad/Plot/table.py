@@ -9,6 +9,11 @@ def calc_means(df: pd.DataFrame):
     return mean_df
 
 
+def __replace_index_for_value(original_df: pd.DataFrame, col: pd.Series) -> pd.Series:
+    original_col = original_df[col.name]
+    return col.apply(lambda x: original_col.iloc[x])
+
+
 def calc_max_min(df: pd.DataFrame):
     var_cols = df.columns
     max_dfs = []
@@ -17,7 +22,8 @@ def calc_max_min(df: pd.DataFrame):
         max_dfs.append(
             df[col]
             .reset_index()
-            .groupby("p").max()
+            .groupby("p").idxmax()
+            .apply(__replace_index_for_value)
             .rename(columns={col: name, "y": f"y_{name}"})
         )
 
@@ -29,7 +35,8 @@ def calc_max_min(df: pd.DataFrame):
         min_dfs.append(
             df[col]
             .reset_index()
-            .groupby("p").min()
+            .groupby("p").idxmin()
+            .apply(__replace_index_for_value)
             .rename(columns={col: name, "y": f"y_{name}"})
         )
 
