@@ -93,7 +93,9 @@ class SeasonalityChart(AbstractSeasonalityChart):
         return dfs
 
     def __render_line(self, a_series: dict, ax: Axes):
-        for df in self.__set_plot_data(a_series['col_name']):
+        x_divisions = []
+        dfs = self.__set_plot_data(a_series['col_name'])
+        for df in dfs:
             ax.plot(df.index, df.value,
                     color=a_series['trace_color'], linewidth=self.axconfig.linewidth, label=a_series["full_name"])
             mean_value = df.groupby('p')['value'].transform('mean')
@@ -103,6 +105,11 @@ class SeasonalityChart(AbstractSeasonalityChart):
                        linestyle='--', linewidth=self.axconfig.linewidth)
             ax.tick_params(axis='y', which='major',
                            labelsize=15)
+            x_divisions.append(df.index[0])
+
+        xticks = [division + x_divisions[1]/2
+                  for division in x_divisions]
+        ax.set_xticks(xticks, range(1, len(dfs)+1))
         self.proxy_lines.append(mlines.Line2D(
             [], [], color=a_series["trace_color"], label=a_series["full_name"]))
 
