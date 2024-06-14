@@ -9,34 +9,35 @@ def calc_means(df: pd.DataFrame):
     return mean_df
 
 
-def __replace_index_for_value(original_df: pd.DataFrame, col: pd.Series) -> pd.Series:
-    original_col = original_df[col.name]
-    return col.apply(lambda x: original_col.iloc[x])
+def __replace_index_for_value(cell_id: int, original_df: pd.DataFrame, colname: str) -> pd.Series:
+    original_col = original_df[colname]
+    return original_col.iloc[cell_id]
 
 
-def calc_max_min(df: pd.DataFrame):
+def calc_max_min(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.reset_index().set_index('p')
+    df_idxmax = df.groupby("p").idxmax()
     var_cols = df.columns
     max_dfs = []
     for col in var_cols:
         name = f"max_{col}"
         max_dfs.append(
-            df[col]
+            df_idxmax[col]
             .reset_index()
-            .groupby("p").idxmax()
-            .apply(__replace_index_for_value)
+            .apply(__replace_index_for_value, args=(df, col))
             .rename(columns={col: name, "y": f"y_{name}"})
         )
 
     max_df = pd.concat(max_dfs, axis=1)
 
+    df_idxmin = df.groupby("p").idxmin()
     min_dfs = []
     for col in var_cols:
         name = f"min_{col}"
         min_dfs.append(
-            df[col]
+            df_idxmin[col]
             .reset_index()
-            .groupby("p").idxmin()
-            .apply(__replace_index_for_value)
+            .apply(__replace_index_for_value, args=(df, col))
             .rename(columns={col: name, "y": f"y_{name}"})
         )
 
@@ -65,11 +66,11 @@ class Table:
         calcs_dfs = []
         for calc in ["maxmin", "last", "mean"]:
             if (calcs == None) or (calc in calcs):
-                if calc == "mean":
+                if calc == "mean" and False:
                     calcs_dfs.append(calc_means(df))
                 if calc == "maxmin":
                     calcs_dfs.append(calc_max_min(df))
-                if calc == "last":
+                if calc == "last" and False:
                     calcs_dfs.append(calc_last_values(df))
 
         calculated_df = pd.concat(calcs_dfs, axis=1)
