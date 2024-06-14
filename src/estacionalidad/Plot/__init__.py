@@ -143,4 +143,5 @@ class SeasonalityChart(AbstractSeasonalityChart):
 
     def set_axconfig(self, config: AxesConfig):
         self.axconfig = config
+        config.apply(self.ax)
         return self
