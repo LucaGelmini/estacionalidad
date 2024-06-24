@@ -15,7 +15,11 @@ matplotlib = "^3.8.4"
 pandas = "^2.2.2"
 openpyxl = "^3.1.2"
 xlrd = "^2.0.1"
+python-dotenv = "^1.0.1"
+
+[tool.poetry-dynamic-versioning]
+enable = true
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamics_versioning.backend"
