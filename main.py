@@ -5,6 +5,8 @@ from matplotlib import pyplot as plt
 df = read_series_indices_indec()
 
 axes_config = AxesConfig()
+axes_config.ylabel = "Índice 2004 = 100"
+axes_config.nticks = 20
 
 
 x = (

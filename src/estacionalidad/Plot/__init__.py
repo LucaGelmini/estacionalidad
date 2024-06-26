@@ -3,6 +3,7 @@ from typing import Iterable, Literal
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 import matplotlib.lines as mlines
+from matplotlib.ticker import MaxNLocator
 from dataclasses import dataclass
 from ..Plot.config import *
 from ..Wrangling import DataFrameAdapter
@@ -26,9 +27,10 @@ class AxesConfig:
     xmargin = 0
     xticks = []
     xtickslables = []
-    ylabel = "Índice 2004 = 100"
+    ylabel = "Título"
     linewidth = 2
     legend = LegendOptions()
+    nticks = 10
 
     def apply(self, ax: Axes):
         ax.margins(x=self.xmargin)
@@ -45,6 +47,8 @@ class SeasonalityChart(AbstractSeasonalityChart):
     begin = None
     end = None
     axconfig = AxesConfig()
+    fig: plt.Figure
+    ax: plt.Axes
 
     def __init__(self, data: DataFrameAdapter) -> None:
         self.data = None
@@ -121,6 +125,8 @@ class SeasonalityChart(AbstractSeasonalityChart):
         for a_series in self.data.series:
             ax = self.ax
             self.__render_line(a_series, ax)
+
+        self.ax.yaxis.set_major_locator(MaxNLocator(self.axconfig.nticks))
 
         return self.fig
 
