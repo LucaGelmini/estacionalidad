@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "estacionalidad"
-version = "0.1.6"
+version = "0.1.8"
 description = "Linecharts to plot the seasonal behaviour of data series throughout a year comparing the same month in different years."
 authors = ["Luca Gelmini <lucagelmini@github.com>"]
 license = "Apache-2.0"
@@ -17,8 +17,8 @@ openpyxl = "^3.1.2"
 xlrd = "^2.0.1"
 python-dotenv = "^1.0.1"
 
-[tool.poetry-dynamic-versioning]
-enable = true
+# [tool.poetry-dynamic-versioning]
+# enable = true
 
 [build-system]
 requires = ["poetry-core", "poetry-dynamic-versioning"]

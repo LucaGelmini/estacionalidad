@@ -28,6 +28,7 @@ class AxesConfig:
     xticks = []
     xtickslables = []
     ylabel = "Título"
+    xlabel = ""
     linewidth = 2
     legend = LegendOptions()
     nticks = 10
@@ -37,6 +38,7 @@ class AxesConfig:
         ax.set_xticks(self.xticks)
         ax.set_xticklabels(self.xtickslables)
         ax.set_ylabel(self.ylabel, fontsize=20)
+        ax.set_xlabel(self.xlabel)
 
     def apply_all(self, axes: Iterable[Axes]):
         for ax in axes:
