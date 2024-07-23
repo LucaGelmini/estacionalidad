@@ -1,13 +1,13 @@
 # Estacionalidad!
 
 ## Getting started
-´´´bash
+```bash
 pip install estacionalidad
-´´´
+```
 
 ## Example using INDEC (Argentina) foreign trade price and quantities index
 
-´´´python
+```python
 
 from estacionalidad.Wrangling import DataFrameAdapter, read_series_indices_indec
 from estacionalidad.Plot import SeasonalityChart, AxesConfig
@@ -61,4 +61,4 @@ print(x.table.table_df)
 
 plt.show()
 
-´´´
+```
