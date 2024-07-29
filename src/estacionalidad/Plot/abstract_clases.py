@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import pandas as pd
-from matplotlib.pyplot import Figure
+from matplotlib.figure import Figure
 from ..Wrangling import DataFrameAdapter
 
 
@@ -14,7 +14,9 @@ class AbstractSeasonalityChart(ABC):
         pass
 
     @abstractmethod
-    def map_color(self, trace_id: str, trace_color: str = 'red', mean_color: str = 'blue'):
+    def map_color(
+        self, trace_id: str, trace_color: str = "red", mean_color: str = "blue"
+    ):
         pass
 
     @abstractmethod
@@ -26,5 +28,6 @@ class AbstractSeasonalityChart(ABC):
         pass
 
     @property
+    @abstractmethod
     def df(self) -> pd.DataFrame:
         pass
